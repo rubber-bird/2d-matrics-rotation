@@ -9,19 +9,19 @@ const int N = 180;
 const int HALF = (N - 1) / 2;
 
 // Colors
-const short COLOR_GREY = 200;
-const short COLOR_GREY_LIGHT = 150;
-const short COLOR_WHITE = 255;
+const int COLOR_GREY = 200;
+const int COLOR_GREY_LIGHT = 150;
+const int COLOR_WHITE = 255;
 
 // Function prototypes
-void loadImage(short pixels[][N], string);
-void rotateImage(short pixels[][N], short newPixels[][N], double angle);
-void clearImage(short pixels[][N]);
+void loadImage(int pixels[][N], string);
+void rotateImage(int pixels[][N], int newPixels[][N], double angle);
+void clearImage(int pixels[][N]);
 void normalizeImageColors(int sinogram[][N]);
-void processImageWithPhantom(short Pixels[][N]);
+void processImageWithPhantom(int Pixels[][N]);
 
 int main() {
-  short Pixels[N][N];
+  int Pixels[N][N];
 
   // Just nullifying the image array before loading new image
   clearImage(Pixels);
@@ -49,11 +49,11 @@ int main() {
   return 0;
 }
 
-void processImageWithPhantom(short Pixels[][N]) {
+void processImageWithPhantom(int Pixels[][N]) {
   int sinogram[N][N] = {};
 
   for (int i = 0; i < N; i++) {
-    short newPixels[N][N];
+    int newPixels[N][N];
 
     clearImage(newPixels);
     rotateImage(Pixels, newPixels, (-1) * i);
@@ -69,10 +69,10 @@ void processImageWithPhantom(short Pixels[][N]) {
 
   for (int r = 0; r < N; r++)
     for (int c = 0; c < N; c++)
-      Pixels[r][c] = (short)sinogram[r][c];
+      Pixels[r][c] = sinogram[r][c];
 }
 
-void clearImage(short pixels[][N]) {
+void clearImage(int pixels[][N]) {
   for (int row = 0; row < N; row++)
     for (int col = 0; col < N; col++)
       pixels[row][col] = 0;
@@ -94,7 +94,7 @@ void normalizeImageColors(int sinogram[][N]) {
  * URL = https://www.geeksforgeeks.org/maths/rotation-matrix/
  * Section of page = 2D Rotation Matrix
  */
-void rotateImage(short pixels[][N], short newPixels[][N], double angle) {
+void rotateImage(int pixels[][N], int newPixels[][N], double angle) {
   double delta = angle * M_PI / 180.0;
 
   // Inverse mapping: for each destination pixel, find source pixel
@@ -116,7 +116,7 @@ void rotateImage(short pixels[][N], short newPixels[][N], double angle) {
   }
 }
 
-void loadImage(short pixels[][N], string fileName) {
+void loadImage(int pixels[][N], string fileName) {
     ifstream file;
     file.open(fileName);
     if (!file) cout << "File does not exist!";

@@ -7,7 +7,7 @@ const int SIZE = 180;
 class Display
 { 
  public:  
-    Display(short A[][SIZE], string fileName) {  
+    Display(int A[][SIZE], string fileName) {
       fstream inFile("html.dat",ios::in);
       fstream outFile(fileName + ".html",ios::out);
       if (inFile.fail()) cout << "Cannot open file";    
