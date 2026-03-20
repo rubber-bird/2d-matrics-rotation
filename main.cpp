@@ -96,6 +96,8 @@ void normalizeImageColors(int sinogram[][N]) {
  */
 void rotateImage(short pixels[][N], short newPixels[][N], double angle) {
   double delta = angle * M_PI / 180.0;
+  double cosineOfDelta = cos(delta);
+  double sineOfDelta = sin(delta);
 
   // Inverse mapping: for each destination pixel, find source pixel
   for(int i = 0; i < N; i++) {
@@ -103,8 +105,8 @@ void rotateImage(short pixels[][N], short newPixels[][N], double angle) {
       double x = j - HALF;
       double y = i - HALF;
 
-      double srcX = x * cos(delta) + y * sin(delta);
-      double srcY = -x * sin(delta) + y * cos(delta);
+      double srcX = x * cosineOfDelta + y * sineOfDelta;
+      double srcY = -x * sineOfDelta + y * cosineOfDelta;
 
       int sj = round(srcX + HALF);
       int si = round(srcY + HALF);
