@@ -1,25 +1,23 @@
 #include <iostream>
 #include <fstream>
-using namespace std;
-
-const int SIZE = 180;  
+using namespace std; 
 
 class Display
 { 
  public:  
-    Display(int A[][SIZE], string fileName) {
-      fstream inFile("html.dat",ios::in);
+    Display(int **p, int rows, int cols, string fileName) {
+      fstream inFile("./data/html/canvas.dat",ios::in);
       fstream outFile(fileName + ".html",ios::out);
       if (inFile.fail()) cout << "Cannot open file";    
       string line;
 
       outFile << "<html>" << endl;
       outFile << "<body>" << endl;
-      outFile << "<canvas id='CANVAS_ID' width ='" << SIZE << "' height='" << SIZE << "'></canvas>" << endl;
+      outFile << "<canvas id='CANVAS_ID' width ='" << cols << "' height='" << rows << "'></canvas>" << endl;
       outFile << "<script>" << endl;
       outFile << "var com     =  4 ; //:4 components( RGBA )" << endl;
-      outFile << "var wid     = " << SIZE << ";" << endl;
-      outFile << "var hig     = " << SIZE << ";" << endl;
+      outFile << "var wid     = " << cols << ";" << endl;
+      outFile << "var hig     = " << rows << ";" << endl;
 
       getline(inFile,line);
       while (inFile) {
@@ -28,9 +26,9 @@ class Display
       }
 
       outFile << "var array = [";
-      for (int row = 0; row < SIZE; row++)
-          for (int col = 0; col < SIZE; col++)
-            outFile << A[row][col] << ",";  
+      for (int row = 0; row < rows; row++)
+          for (int col = 0; col < cols; col++)
+            outFile << p[row][col] << ",";  
 
       outFile.seekp(-1,ios::cur);
       outFile << "];" << endl << endl;
