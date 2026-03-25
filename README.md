@@ -1,9 +1,9 @@
 # BMCC Research - 2d matrics rotation and sinogram
 
-### Run compilation and exec the binary
+### Build and run
 
-For MacOS
 ```sh
-g++ main.cpp -o ./bin/2drt && ./bin/2drt
+cmake -B build
+cmake --build build
+./build/2DRotation
 ```
-
