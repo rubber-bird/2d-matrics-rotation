@@ -1,2 +1,2 @@
 
-void forwardProjection(int** p, int rows, int cols);
+void forwardProjection(double** p, int rows, int cols);

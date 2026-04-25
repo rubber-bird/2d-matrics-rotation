@@ -7,3 +7,5 @@ cmake -B build
 cmake --build build
 ./build/2DRotation
 ```
+cmake -B build && cmake --build build && ./build/2DRotation
+

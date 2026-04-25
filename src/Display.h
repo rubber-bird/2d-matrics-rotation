@@ -2,10 +2,9 @@
 #include <fstream>
 using namespace std; 
 
-class Display
-{ 
+class Display { 
  public:  
-    Display(int **p, int rows, int cols, string fileName) {
+    Display(double **p, int rows, int cols, string fileName) {
       fstream inFile("./data/html/canvas.dat",ios::in);
       fstream outFile(fileName + ".html",ios::out);
       if (inFile.fail()) cout << "Cannot open file";    
@@ -28,7 +27,7 @@ class Display
       outFile << "var array = [";
       for (int row = 0; row < rows; row++)
           for (int col = 0; col < cols; col++)
-            outFile << p[row][col] << ",";  
+            outFile << (int)(p[row][col]) << ",";  
 
       outFile.seekp(-1,ios::cur);
       outFile << "];" << endl << endl;

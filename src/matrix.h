@@ -1,10 +1,10 @@
 
-int** initializeMatrix(int rows, int cols);
+double** initializeMatrix(int rows, int cols);
 
-void fillMatrix(int **p, int rows, int cols, int value);
+void fillMatrix(double **p, int rows, int cols, double value);
 
-int** rotateMatrix(int **p, int rows, int cols, double angle);
+double** rotateMatrix(double **p, int rows, int cols, double angle);
 
-void printMatrix(int **p, int rows, int cols);
+void printMatrix(double **p, int rows, int cols);
 
-void normalizeMatrixValues(int **p, int rows, int cols, int rangeMin, int rangeMax);
+void normalizeMatrixValues(double **p, int rows, int cols, double rangeMin, double rangeMax);

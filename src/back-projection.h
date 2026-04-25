@@ -1,2 +1,2 @@
 
-void backProjection(int** p, int rows, int cols);
+void backProjection(double** p, int rows, int cols);

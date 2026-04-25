@@ -1,22 +1,22 @@
 #include <iostream>
 #include <cmath>
 
-int** initializeMatrix(int rows, int cols) {
-    int **matrix = new int*[rows];
+double** initializeMatrix(int rows, int cols) {
+    double **matrix = new double*[rows];
     for (int i = 0; i < rows; i++) {
-        matrix[i] = new int[cols];
+        matrix[i] = new double[cols];
     }
     return matrix;
 }
 
-void fillMatrix(int **matrix, int rows, int cols, int value) {
+void fillMatrix(double **matrix, int rows, int cols, double value) {
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
             matrix[i][j] = value;
 }
 
-int** rotateMatrix(int **p, int rows, int cols, double angle) {
-    int **temp = initializeMatrix(rows, cols);
+double** rotateMatrix(double **p, int rows, int cols, double angle) {
+    double **temp = initializeMatrix(rows, cols);
 
     fillMatrix(temp, rows, cols, 0);
 
@@ -44,7 +44,7 @@ int** rotateMatrix(int **p, int rows, int cols, double angle) {
     return temp;
 }
 
-void printMatrix(int **p, int rows, int cols) {
+void printMatrix(double **p, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             std::cout << p[i][j] << " ";
@@ -53,14 +53,18 @@ void printMatrix(int **p, int rows, int cols) {
     }
 }
 
-void normalizeMatrixValues(int **p, int rows, int cols, int rangeMin, int rangeMax) {
-    int maxVal = 0;
+void normalizeMatrixValues(double **p, int rows, int cols, double rangeMin, double rangeMax) {
+    double maxVal = 0;
+    double minVal = 0;
     for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < cols; j++) {
             if (p[i][j] > maxVal)
                 maxVal = p[i][j];
+            else if (p[i][j] < minVal)
+                minVal = p[i][j];
+        }
 
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
-            p[i][j] = p[i][j] * (rangeMax - rangeMin) / maxVal + rangeMin;
+            p[i][j] = p[i][j] * (rangeMax - rangeMin) / (maxVal - minVal) + rangeMin;
 }
