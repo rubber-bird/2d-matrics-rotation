@@ -17,7 +17,7 @@ const int COLOR_WHITE = 255;
 // Function prototypes
 void loadImage(double** p, int rows, int cols, string fileName);
 
-const int SIZE = 400;
+const int SIZE = 180;
 
 void fourierTransform(
     double initial[SIZE],
@@ -65,25 +65,50 @@ void createFilter(double filter[]) {
 }
 
 void createGaussianFilter(double filter[], double sigma) {
+    createFilter(filter);
     for (int i = 0; i < SIZE; i++) {
-        double c = (i <= SIZE / 2) ? i : (SIZE - i);
-        filter[i] = exp(-(c * c) / (2 * sigma * sigma));
+        double ramp = filter[i];
+        filter[i] = ramp * exp(-(ramp * ramp) / (2 * sigma * sigma));
     }
 }
 
 void createCosineFilter(double filter[]) {
+    createFilter(filter);
     for (int i = 0; i < SIZE; i++) {
-        double c = abs(i - SIZE / 2);
-        double ramp = (SIZE - 2 * c) / (double)SIZE;
+        double ramp = filter[i];
         filter[i] = ramp * cos(M_PI * ramp / 2.0);
     }
 }
 
 void createSheppLoganFilter(double filter[]) {
+    createFilter(filter);
     for (int i = 0; i < SIZE; i++) {
-        double c = abs(i - SIZE / 2);
-        double ramp = (SIZE - 2 * c) / (double)SIZE;
+        double ramp = filter[i];
         filter[i] = (2.0 / M_PI) * sin(M_PI * ramp / 2.0);
+    }
+}
+
+void createHammingFilter(double filter[]) {
+    createFilter(filter);
+    for (int i = 0; i < SIZE; i++) {
+        double ramp = filter[i];
+        filter[i] = ramp * (0.54 + 0.46 * cos(M_PI * ramp));
+    }
+}
+
+void createHannFilter(double filter[]) {
+    createFilter(filter);
+    for (int i = 0; i < SIZE; i++) {
+        double ramp = filter[i];
+        filter[i] = ramp * 0.5 * (1.0 + cos(M_PI * ramp));
+    }
+}
+
+void createButterworthFilter(double filter[], double cutoff, int order) {
+    createFilter(filter);
+    for (int i = 0; i < SIZE; i++) {
+        double ramp = filter[i];
+        filter[i] = ramp / (1.0 + pow(ramp / cutoff, 2 * order));
     }
 }
 
@@ -92,13 +117,13 @@ void createSheppLoganFilter(double filter[]) {
 // }
 
 int main() {
-  int width = 400;
-  int height = 400;
+  int width = SIZE;
+  int height = SIZE;
 
   double **matrix = initializeMatrix(height, width);
   fillMatrix(matrix, height, width, COLOR_BLACK);
 
-  loadImage(matrix, height, width, "./data/sinograms/sinogram-004-400x400.txt");
+  loadImage(matrix, height, width, "./data/sinograms/sinogram-001-180x180.txt");
 //   applyFilters(matrix, height, width);
 
   double **tempArray = initializeMatrix(height, width);
@@ -108,10 +133,13 @@ int main() {
   double max = -9999999.9999999;
 
   double rampFilter[SIZE];
-  // createFilter(rampFilter);
-  // createGaussianFilter(rampFilter, SIZE / 8.0);
-  // createCosineFilter(rampFilter);
-  createSheppLoganFilter(rampFilter);
+  createFilter(rampFilter);
+//   createGaussianFilter(rampFilter, 0.5);
+//   createCosineFilter(rampFilter);
+//   createSheppLoganFilter(rampFilter);
+//   createHammingFilter(rampFilter);
+    // createHannFilter(rampFilter);
+    // createButterworthFilter(rampFilter, 0.5, 2);
 
   for (int row = 0; row < SIZE; row++) {
     double initial[SIZE];
@@ -158,7 +186,14 @@ int main() {
 
 //   Display image04Pixels(matrix, height, width, "./output/sinograms/phantom-004-sinogram");
   backProjection(tempArray, height, width);
-  Display image04Sinogram(tempArray, height, width, "./output/sinograms/phantom-004-filtered-backprojection");
+
+  double **phantom = initializeMatrix(height, width);
+  fillMatrix(phantom, height, width, COLOR_BLACK);
+  loadImage(phantom, height, width, "./data/phantoms/phantom-002-180x180.txt");
+
+  cout << "MSE: " << mse(phantom, tempArray, height, width) << endl;
+
+  Display image04Sinogram(tempArray, height, width, "./output/sinograms/phantom-002-filtered-backprojection");
 
   // Clean up
   fillMatrix(matrix, height, width, COLOR_BLACK);

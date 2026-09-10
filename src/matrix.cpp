@@ -53,6 +53,16 @@ void printMatrix(double **p, int rows, int cols) {
     }
 }
 
+double mse(double **a, double **b, int rows, int cols) {
+    double sum = 0.0;
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++) {
+            double diff = a[i][j] - b[i][j];
+            sum += diff * diff;
+        }
+    return sum / (rows * cols);
+}
+
 void normalizeMatrixValues(double **p, int rows, int cols, double rangeMin, double rangeMax) {
     double maxVal = 0;
     double minVal = 0;
